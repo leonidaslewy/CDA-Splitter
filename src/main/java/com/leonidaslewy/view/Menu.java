@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * A class that interect with the user, outputing text and receiving parameters to be used in the program.
+ */
 public class Menu {
     
     /**

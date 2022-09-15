@@ -16,14 +16,17 @@ public class App {
             var input = Menu.printMenu(options);
             switch(input) {
                 default:
+                    //Sair
                     case 0:
                         System.exit(0);
                         break;
                     
+                    //Definir Diretorio
                     case 1:
                         dir = Menu.getDiretorio();
                         break;
 
+                    //Organizar CDAs    
                     case 2:
                     if(dir.getName().equals("null")) {
                         System.out.println("---==SELECIONE UM DIRETORIO PRIMEIRO==---");
@@ -31,8 +34,10 @@ public class App {
                     } else {
                         var CDAO = new CDAOrganizer(DirAnalyser.getFiles(dir));
                         CDAO.organizeAllFiles();
+                        break;
                     }
-
+                    
+                    //Organizar Peticoes
                     case 3:
                     if(dir.getName().equals("null")) {
                         System.out.println("---==SELECIONE UM DIRETORIO PRIMEIRO==---");

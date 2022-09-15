@@ -3,6 +3,10 @@ package com.leonidaslewy.cdaTools;
 import java.io.File;
 import java.util.Stack;
 
+/**
+ * Class made with the purpose of an agregation of functions related with get archives and folders for the program.
+ * @author Leônidas Lewy
+ */
 public class DirAnalyser {
 
     /**
