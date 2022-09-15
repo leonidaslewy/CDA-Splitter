@@ -2,6 +2,8 @@ package com.leonidaslewy;
 
 import java.io.File;
 
+import com.leonidaslewy.cdaTools.CDAOrganizer;
+import com.leonidaslewy.cdaTools.DirAnalyser;
 import com.leonidaslewy.view.Menu;
 
 public class App {
@@ -19,15 +21,18 @@ public class App {
                         break;
                     
                     case 1:
-                        Menu.getDiretorio();
+                        dir = Menu.getDiretorio();
                         break;
+
                     case 2:
                     if(dir.getName().equals("null")) {
                         System.out.println("---==SELECIONE UM DIRETORIO PRIMEIRO==---");
                         break;
                     } else {
-
+                        var CDAO = new CDAOrganizer(DirAnalyser.getFiles(dir));
+                        CDAO.organizeAllFiles();
                     }
+
                     case 3:
                     if(dir.getName().equals("null")) {
                         System.out.println("---==SELECIONE UM DIRETORIO PRIMEIRO==---");
