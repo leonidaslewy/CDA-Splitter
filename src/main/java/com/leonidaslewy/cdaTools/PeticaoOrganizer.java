@@ -8,7 +8,6 @@ import java.util.Stack;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.w3c.dom.Text;
 
 public class PeticaoOrganizer {
     private final static String REPLACE = ("[/\\\\:*?\"<>|]");
@@ -45,7 +44,11 @@ public class PeticaoOrganizer {
         pdf.close();
         if(text.contains("Petição Nº:")) {
             //Formats the string and creates the dir
-            var peticao = text.substring(text.indexOf("Cidade:.")+8, text.indexOf(".", text.indexOf("Cidade:.")+9)).replaceAll(REPLACE, "-");
+            var finalIndex = text.indexOf(".", text.indexOf("Cidade:.")+9);
+            while((text.charAt(finalIndex-1)+"").equals(" ")) {
+                finalIndex--;
+            }
+            var peticao = text.substring(text.indexOf("Cidade:.")+8, text.indexOf(".", text.indexOf("Cidade:.")+8)).replaceAll(REPLACE, "-");
             var peticaoDir = new File(file.getParent()+SEP+"ORGANIZADO"+SEP+peticao);
             peticaoDir.mkdir();
             

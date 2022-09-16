@@ -64,7 +64,7 @@ public class DirAnalyser {
         } else if (file.getName().endsWith(".pdf") && getText(file).contains("Código para verificação:")) {
             //rename the file with the code of the signature
             var text = getText(file);
-            var rename = String.format("004 ASSINATURA %s.pdf", text.substring(text.indexOf("verificação:")+13, text.indexOf(" ", text.indexOf("verificação:")+13)));
+            var rename = String.format("004 ASSINATURA %s.pdf", text.substring(text.indexOf("verificação:")+13, text.indexOf("verificação:")+32));
             file.renameTo(new File(createImportantDir(dir).getAbsolutePath()+SEP+rename));
             return null;
         //if its a pdf

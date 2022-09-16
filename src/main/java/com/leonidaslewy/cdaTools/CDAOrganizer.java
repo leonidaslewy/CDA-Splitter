@@ -47,10 +47,13 @@ public class CDAOrganizer {
         var text = new PDFTextStripper().getText(pdf);
         pdf.close();
         text = text.replace(".", "").replace("\n", ".").replace("\r", "");
-        
         if(text.contains("os livros de Dívida Ativa")) {
             //Formats the string and creates the dir
-            var CDAName = text.substring(text.indexOf("/Devedor:")+10, text.indexOf(".", text.indexOf("/Devedor:"))).replaceAll(REPLACE, "-");
+            var finalIndex = text.indexOf(".", text.indexOf("/Devedor:")+10);
+            while((text.charAt(finalIndex-1)+"").equals(" ")) {
+                finalIndex--;
+            }
+            var CDAName = text.substring(text.indexOf("/Devedor:")+10, finalIndex).replaceAll(REPLACE, "-");
             var CDADir = new File(file.getParent()+SEP+"ORGANIZADO"+SEP+CDAName+SEP);
             CDADir.mkdir();
             //Formats the string to rename the file
@@ -59,6 +62,7 @@ public class CDAOrganizer {
             var rename = String.format("002 CDA %s.pdf", CDANumber);
             file.renameTo(new File(CDADir.getAbsolutePath()+SEP+rename));
             //Copy signature to the directory
+            text = text.replace(".", "");
             var signaturePath = String.format("004 ASSINATURA %s.pdf", text.substring(text.indexOf("informe o código")+17, text.indexOf("informe o código")+36));
             File signature = new File(originalDir+SEP+"IMPORTANTE"+SEP+signaturePath);
             if(signature.exists() && !new File(CDADir.getAbsolutePath()+SEP+signaturePath).exists()) {
