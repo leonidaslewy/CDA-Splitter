@@ -1,13 +1,15 @@
 package com.leonidaslewy;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.leonidaslewy.cdaTools.CDAOrganizer;
 import com.leonidaslewy.cdaTools.DirAnalyser;
+import com.leonidaslewy.cdaTools.PeticaoOrganizer;
 import com.leonidaslewy.view.Menu;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //This array defines the main options in the program
         String[] options = {"Sair", "Definir Diretorio", "Organizar CDAs", "Organizar Peticoes"};
         
@@ -15,19 +17,18 @@ public class App {
         while(true) {
             var input = Menu.printMenu(options);
             switch(input) {
-                default:
-                    //Sair
-                    case 0:
-                        System.exit(0);
-                        break;
-                    
-                    //Definir Diretorio
-                    case 1:
-                        dir = Menu.getDiretorio();
-                        break;
+                //Sair
+                case 0:
+                    System.exit(0);
+                    break;
+                
+                //Definir Diretorio
+                case 1:
+                    dir = Menu.getDiretorio();
+                    break;
 
-                    //Organizar CDAs    
-                    case 2:
+                //Organizar CDAs    
+                case 2:
                     if(dir.getName().equals("null")) {
                         System.out.println("---==SELECIONE UM DIRETORIO PRIMEIRO==---");
                         break;
@@ -36,14 +37,16 @@ public class App {
                         CDAO.organizeAllFiles();
                         break;
                     }
-                    
-                    //Organizar Peticoes
-                    case 3:
+                
+                //Organizar Peticoes
+                case 3:
                     if(dir.getName().equals("null")) {
                         System.out.println("---==SELECIONE UM DIRETORIO PRIMEIRO==---");
                         break;
                     } else {
-
+                        var PO = new PeticaoOrganizer(DirAnalyser.getFiles(dir));
+                        PO.organizeAllFiles();
+                        break;
                     }
             }
         }
