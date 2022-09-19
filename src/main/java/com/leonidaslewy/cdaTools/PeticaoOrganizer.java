@@ -26,14 +26,17 @@ public class PeticaoOrganizer {
      * Organize in parallel all the files in the Stack, renaming and moving then when necessary.
      */
     public void organizeAllFiles() {
-        new File(fileList.peek().getParent()+SEP+"ORGANIZADO").mkdir();
-        fileList.parallelStream().forEach(file -> {
-            try {
-                organizeFile(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        if (!fileList.empty()) {
+            new File(fileList.peek().getParent()+SEP+"ORGANIZADO").mkdir();
+            fileList.parallelStream().forEach(file -> {
+                try {
+                    organizeFile(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        
     }
 
     private void organizeFile(File file) throws IOException {
@@ -44,11 +47,11 @@ public class PeticaoOrganizer {
         pdf.close();
         if(text.contains("Petição Nº:")) {
             //Formats the string and creates the dir
-            var finalIndex = text.indexOf(".", text.indexOf("Cidade:.")+9);
+            var finalIndex = text.indexOf(".", text.indexOf("Cidade:.")+8);
             while((text.charAt(finalIndex-1)+"").equals(" ")) {
                 finalIndex--;
             }
-            var peticao = text.substring(text.indexOf("Cidade:.")+8, text.indexOf(".", text.indexOf("Cidade:.")+8)).replaceAll(REPLACE, "-");
+            var peticao = text.substring(text.indexOf("Cidade:.")+8, finalIndex).replaceAll(REPLACE, "-");
             var peticaoDir = new File(file.getParent()+SEP+"ORGANIZADO"+SEP+peticao);
             peticaoDir.mkdir();
             

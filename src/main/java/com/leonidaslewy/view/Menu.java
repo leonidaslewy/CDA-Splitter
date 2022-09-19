@@ -45,12 +45,10 @@ public class Menu {
      * @return File directory inputed.
      */
     public static File getDiretorio() {
-        var sc = new Scanner(System.in);
-        
         while(true) {
             System.out.println("=========================");
             System.out.println("Insira o caminho do diretorio: ");
-            var dirPath = sc.nextLine();
+            var dirPath = System.console().readLine();
             var dir = new File(dirPath);
             
             if(!dir.isDirectory()) {

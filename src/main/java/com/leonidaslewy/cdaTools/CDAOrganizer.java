@@ -30,14 +30,16 @@ public class CDAOrganizer {
      * Organize in parallel all the files in the Stack, renaming and moving then when necessary.
      */
     public void organizeAllFiles() {
-        new File(fileList.peek().getParent()+SEP+"ORGANIZADO").mkdir();
-        fileList.parallelStream().forEach(file -> {
-            try {
-                organizeFile(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        if (!fileList.empty()) {
+            new File(fileList.peek().getParent()+SEP+"ORGANIZADO").mkdir();
+            fileList.parallelStream().forEach(file -> {
+                try {
+                    organizeFile(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     //Organize by name and CDA number.
