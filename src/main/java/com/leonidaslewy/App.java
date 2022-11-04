@@ -5,13 +5,14 @@ import java.io.IOException;
 
 import com.leonidaslewy.cdaTools.CDAOrganizer;
 import com.leonidaslewy.cdaTools.DirAnalyser;
+import com.leonidaslewy.cdaTools.ExtratoOrganizer;
 import com.leonidaslewy.cdaTools.PeticaoOrganizer;
 import com.leonidaslewy.view.Menu;
 
 public class App {
     public static void main(String[] args) throws IOException {
         //This array defines the main options in the program
-        String[] options = {"Sair", "Definir Diretorio", "Organizar CDAs", "Organizar Peticoes"};
+        String[] options = {"Sair", "Definir Diretorio", "Organizar CDAs", "Organizar Peticoes", "Organizar Extratos"};
         
         var dir = new File("null");
         while(true) {
@@ -46,6 +47,16 @@ public class App {
                     } else {
                         var PO = new PeticaoOrganizer(DirAnalyser.getFiles(dir));
                         PO.organizeAllFiles();
+                        break;
+                    }
+
+                case 4:
+                    if(dir.getName().equals("null")) {
+                        System.out.println("---==SELECIONE UM DIRETORIO PRIMEIRO==---");
+                        break;
+                    } else {
+                        var EO = new ExtratoOrganizer(DirAnalyser.getFiles(dir));
+                        EO.organizeAllFiles();
                         break;
                     }
             }
