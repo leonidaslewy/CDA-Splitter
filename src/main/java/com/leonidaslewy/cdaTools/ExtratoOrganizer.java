@@ -46,19 +46,26 @@ public class ExtratoOrganizer {
         pdf.close();
 
         if(text.contains("Relatório Extrato do Contribuinte")) {
-            //Formats the string and creates the dir
-            var finalIndex = text.indexOf(".", text.indexOf("-", text.indexOf("Bairro:."))+1);
-            while((text.charAt(finalIndex-1)+"").equals(" ")) {
-                finalIndex--;
-            }
-            var extrato = text.substring(text.indexOf("-", text.indexOf("Bairro:."))+1, finalIndex).replaceAll(REPLACE, "-");
-            var extratoDir = new File(file.getParent()+SEP+"ORGANIZADO"+SEP+extrato);
+            var extratoDir = new File(file.getParent()+SEP+"ORGANIZADO"+SEP+"EXTRATOS");
             extratoDir.mkdir();
 
             //Formats the string to rename the file
             var label = text.substring(text.indexOf("Imóvel")+8, text.indexOf(".", text.indexOf("Imóvel")+8));
             var rename = String.format("005 EXTRATO IMOVEL %s.pdf", label);
-            file.renameTo(new File(extratoDir.getAbsolutePath()+SEP+rename));
+            
+            int i = 0;
+            boolean renamed = false;
+            while (!renamed) {
+                if (i == 0) {
+                    renamed = file.renameTo(new File(extratoDir.getAbsolutePath()+SEP+rename));
+                } else {
+                    rename = String.format("005 EXTRATO IMOVEL %s (%d).pdf", label, i);
+                    renamed = file.renameTo(new File(extratoDir.getAbsolutePath()+SEP+rename));
+                }
+
+                if(!renamed)
+                    i++;
+            }
         }
     }
 }
