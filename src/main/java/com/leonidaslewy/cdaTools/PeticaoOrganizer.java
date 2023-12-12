@@ -43,15 +43,21 @@ public class PeticaoOrganizer {
         //Loads the file
         PDDocument pdf = Loader.loadPDF(file);
         var text = new PDFTextStripper().getText(pdf);
-        text = text.replace(".", "").replace("\n", ".").replace("\r", "");
         pdf.close();
-        if(text.contains("Petição Nº:")) {
-            //Formats the string and creates the dir
-            var finalIndex = text.indexOf(".", text.indexOf("Cidade:.")+8);
-            while((text.charAt(finalIndex-1)+"").equals(" ")) {
-                finalIndex--;
-            }
-            var peticao = text.substring(text.indexOf("Cidade:.")+8, finalIndex).replaceAll(REPLACE, "-");
+        if(text.contains("Petição Inicial")) {
+            text = text.replace(".", "").replace("\n", ".").replace("\r", ".");
+
+            //Gets the initial index for the name
+            var fromIndex = text.indexOf("Executado:")+11;
+            while((text.charAt(fromIndex)+"").equals(" "))
+                fromIndex++;
+            
+            //Gets the final index for the name
+            var toIndex = text.indexOf(".", fromIndex);
+            while((text.charAt(toIndex-1)+"").equals(" "))
+                toIndex--;
+
+            var peticao = text.substring(fromIndex, toIndex).replaceAll(REPLACE, "-");
             var peticaoDir = new File(file.getParent()+SEP+"ORGANIZADO"+SEP+peticao);
             peticaoDir.mkdir();
             

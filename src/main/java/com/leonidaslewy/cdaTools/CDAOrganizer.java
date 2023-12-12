@@ -48,21 +48,37 @@ public class CDAOrganizer {
         PDDocument pdf = Loader.loadPDF(file);
         var text = new PDFTextStripper().getText(pdf);
         pdf.close();
-        text = text.replace(".", "").replace("\n", ".").replace("\r", "");
         if(text.contains("os livros de Dívida Ativa")) {
-            //Formats the string and creates the dir
-            var finalIndex = text.indexOf(".", text.indexOf("/Devedor:")+10);
-            while((text.charAt(finalIndex-1)+"").equals(" ")) {
-                finalIndex--;
-            }
-            var CDAName = text.substring(text.indexOf("/Devedor:")+10, finalIndex).replaceAll(REPLACE, "-");
+            text = text.replace(".", "").replace("\n", ".").replace("\r", "");
+            //Gets the initial index for the name
+            var fromIndex = text.indexOf("-", text.indexOf(".", text.indexOf("PREFEITURA MUNICIPAL DE CAPÃO DA CANOA")))+1;
+            while((text.charAt(fromIndex)+"").equals(" "))
+                fromIndex++;
+            
+            //Gets the final index for the name
+            var toIndex = text.indexOf(".", fromIndex);
+            while((text.charAt(toIndex-1)+"").equals(" "))
+                toIndex--;
+ 
+            //Creates the substring for the name and the directory
+            var CDAName = text.substring(fromIndex, toIndex).replaceAll(REPLACE, "-");
             var CDADir = new File(file.getParent()+SEP+"ORGANIZADO"+SEP+CDAName+SEP);
             CDADir.mkdir();
+
             //Formats the string to rename the file
-            var CDANumber = text.substring(text.indexOf("Número:")+8, text.indexOf(".", text.indexOf("/20"))).replace("/", "-");
+            fromIndex = text.indexOf("CDA Nº")+6;
+            while((text.charAt(fromIndex-1)+"").equals(" "))
+                fromIndex++;
+                
+            toIndex = text.indexOf(".", fromIndex);
+            while((text.charAt(toIndex-1)+"").equals(" "))
+                toIndex--;
+
+            var CDANumber = text.substring(fromIndex, toIndex).replace("/", "-");
             var originalDir = file.getParent();
             var rename = String.format("002 CDA %s.pdf", CDANumber);
             file.renameTo(new File(CDADir.getAbsolutePath()+SEP+rename));
+
             //Copy signature to the directory
             text = text.replace(".", "");
             var signaturePath = String.format("004 ASSINATURA %s.pdf", text.substring(text.indexOf("informe o código")+17, text.indexOf("informe o código")+36));
