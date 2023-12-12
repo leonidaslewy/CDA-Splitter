@@ -48,7 +48,7 @@ public class PeticaoOrganizer {
             text = text.replace(".", "").replace("\n", ".").replace("\r", ".");
 
             //Gets the initial index for the name
-            var fromIndex = text.indexOf("Executado:")+11;
+            var fromIndex = text.indexOf(".", (text.indexOf("Corresponsável:")+15))+1;
             while((text.charAt(fromIndex)+"").equals(" "))
                 fromIndex++;
             
